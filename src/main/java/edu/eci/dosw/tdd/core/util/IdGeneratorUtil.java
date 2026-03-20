@@ -1,4 +1,13 @@
 package edu.eci.dosw.tdd.core.util;
 
-public class IdGeneratorUtil {
+import java.util.UUID;
+
+public final class IdGeneratorUtil {
+
+    private IdGeneratorUtil() {
+    }
+
+    public static String randomId() {
+        return UUID.randomUUID().toString();
+    }
 }

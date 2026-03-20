@@ -1,4 +1,13 @@
 package edu.eci.dosw.tdd.core.util;
 
-public class DateUtil {
+import java.time.LocalDate;
+
+public final class DateUtil {
+
+    private DateUtil() {
+    }
+
+    public static LocalDate today() {
+        return LocalDate.now();
+    }
 }

@@ -1,4 +1,13 @@
 package edu.eci.dosw.tdd.controller.dto;
 
-public class LoanDTO {
+
+import java.time.LocalDate;
+
+public record LoanDTO(
+        String userId,
+        String bookId,
+        LocalDate loanDate,
+        LocalDate returnDate,
+        String status
+) {
 }
