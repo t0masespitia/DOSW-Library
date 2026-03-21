@@ -2,7 +2,7 @@ package edu.eci.dosw.tdd.controller;
 
 
 import edu.eci.dosw.tdd.controller.dto.BookDTO;
-import edu.eci.dosw.tdd.controller.mapper.BookMapper;
+import edu.eci.dosw.tdd.persistence.mapper.BookMapper;
 import edu.eci.dosw.tdd.core.service.BookService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

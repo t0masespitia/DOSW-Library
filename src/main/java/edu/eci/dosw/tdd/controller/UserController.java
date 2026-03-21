@@ -2,7 +2,7 @@ package edu.eci.dosw.tdd.controller;
 
 
 import edu.eci.dosw.tdd.controller.dto.UserDTO;
-import edu.eci.dosw.tdd.controller.mapper.UserMapper;
+import edu.eci.dosw.tdd.persistence.mapper.UserMapper;
 import edu.eci.dosw.tdd.core.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package edu.eci.dosw.tdd.controller.mapper;
+package edu.eci.dosw.tdd.persistence.mapper;
 
 import edu.eci.dosw.tdd.controller.dto.BookDTO;
 import edu.eci.dosw.tdd.core.model.Book;

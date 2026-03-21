@@ -1,7 +1,7 @@
 package edu.eci.dosw.tdd.controller;
 
 import edu.eci.dosw.tdd.controller.dto.LoanDTO;
-import edu.eci.dosw.tdd.controller.mapper.LoanMapper;
+import edu.eci.dosw.tdd.persistence.mapper.LoanMapper;
 import edu.eci.dosw.tdd.core.service.LoanService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
