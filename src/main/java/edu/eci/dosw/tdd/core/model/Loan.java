@@ -1,12 +1,22 @@
 package edu.eci.dosw.tdd.core.model;
+
 import java.time.LocalDate;
 
 public class Loan {
+    private Long id;
     private Book book;
     private User user;
     private LocalDate loanDate;
     private LocalDate returnDate;
     private Status status;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Book getBook() {
         return book;
@@ -47,5 +57,4 @@ public class Loan {
     public void setStatus(Status status) {
         this.status = status;
     }
-
 }

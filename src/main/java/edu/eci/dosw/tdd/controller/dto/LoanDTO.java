@@ -1,6 +1,6 @@
 package edu.eci.dosw.tdd.controller.dto;
 
-
+import edu.eci.dosw.tdd.persistence.entity.LoanStatus;
 import java.time.LocalDate;
 
 public record LoanDTO(
@@ -9,6 +9,5 @@ public record LoanDTO(
         Long bookId,
         LocalDate loanDate,
         LocalDate returnDate,
-        String status
-) {
-}
+        LoanStatus status
+) {}

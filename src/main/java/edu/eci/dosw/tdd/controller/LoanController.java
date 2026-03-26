@@ -1,5 +1,6 @@
 package edu.eci.dosw.tdd.controller;
 
+import edu.eci.dosw.tdd.controller.dto.CreateLoanRequest;
 import edu.eci.dosw.tdd.controller.dto.LoanDTO;
 import edu.eci.dosw.tdd.core.service.LoanService;
 import edu.eci.dosw.tdd.persistence.mapper.LoanMapper;
@@ -20,24 +21,17 @@ public class LoanController {
     @GetMapping
     public List<LoanDTO> getLoans() {
         return loanService.getLoans().stream()
-                .map(loan -> new LoanDTO(
-                        null,
-                        loan.getUser().getId(),
-                        loan.getBook().getId(),
-                        loan.getLoanDate(),
-                        loan.getReturnDate(),
-                        loan.getStatus().name()
-                ))
+                .map(LoanMapper::toDto)
                 .toList();
     }
 
     @PostMapping("/borrow")
-    public LoanDTO borrowBook(@RequestBody LoanDTO request) {
+    public LoanDTO borrowBook(@RequestBody CreateLoanRequest request) {
         return LoanMapper.toDto(loanService.loanBook(request.userId(), request.bookId()));
     }
 
     @PostMapping("/return")
-    public LoanDTO returnBook(@RequestBody LoanDTO request) {
+    public LoanDTO returnBook(@RequestBody CreateLoanRequest request) {
         return LoanMapper.toDto(loanService.returnBook(request.userId(), request.bookId()));
     }
 }

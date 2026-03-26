@@ -28,7 +28,7 @@ public final class LoanMapper {
                 loan.getBook().getId(),
                 loan.getLoanDate(),
                 loan.getReturnDate(),
-                loan.getStatus().name()
+                loan.getStatus() == Status.ACTIVE ? LoanStatus.ACTIVO : LoanStatus.DEVUELTO
         );
     }
 
@@ -39,7 +39,7 @@ public final class LoanMapper {
                 entity.getBook().getId(),
                 entity.getLoanDate(),
                 entity.getReturnDate(),
-                entity.getStatus().name()
+                entity.getStatus()
         );
     }
 }

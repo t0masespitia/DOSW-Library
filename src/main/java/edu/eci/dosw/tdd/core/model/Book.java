@@ -1,3 +1,5 @@
+package edu.eci.dosw.tdd.core.model;
+
 public class Book {
     private Long id;
     private String title;
