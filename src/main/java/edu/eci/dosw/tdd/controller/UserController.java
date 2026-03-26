@@ -1,9 +1,8 @@
 package edu.eci.dosw.tdd.controller;
 
-
 import edu.eci.dosw.tdd.controller.dto.UserDTO;
-import edu.eci.dosw.tdd.persistence.mapper.UserMapper;
 import edu.eci.dosw.tdd.core.service.UserService;
+import edu.eci.dosw.tdd.persistence.mapper.UserMapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +21,8 @@ public class UserController {
 
     @GetMapping
     public List<UserDTO> getUsers() {
-        return userService.getUsers().stream().map(UserMapper::toDto).toList();
+        return userService.getUsers().stream()
+                .map(UserMapper::toDto)
+                .toList();
     }
 }

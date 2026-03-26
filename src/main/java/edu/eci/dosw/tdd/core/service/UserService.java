@@ -2,42 +2,37 @@ package edu.eci.dosw.tdd.core.service;
 
 import edu.eci.dosw.tdd.core.exception.UserNotFoundException;
 import edu.eci.dosw.tdd.core.model.User;
-import edu.eci.dosw.tdd.core.validator.UserValidator;
+import edu.eci.dosw.tdd.persistence.entity.UserEntity;
+import edu.eci.dosw.tdd.persistence.mapper.UserMapper;
+import edu.eci.dosw.tdd.persistence.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserService {
 
-    private final Map<String, User> usersById = new LinkedHashMap<>();
-    private final UserValidator userValidator = new UserValidator();
+    private final UserRepository userRepository;
 
-    public UserService() {
-        User user1 = new User();
-        user1.setId("u1");
-        user1.setName("Ana");
-        usersById.put(user1.getId(), user1);
-
-        User user2 = new User();
-        user2.setId("u2");
-        user2.setName("Luis");
-        usersById.put(user2.getId(), user2);
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public List<User> getUsers() {
-        return new ArrayList<>(usersById.values());
+        return userRepository.findAll()
+                .stream()
+                .map(UserMapper::toModel)
+                .toList();
     }
 
-    public User getUserById(String userId) {
-        String validUserId = userValidator.validateUserId(userId);
-        User user = usersById.get(validUserId);
-        if (user == null) {
-            throw new UserNotFoundException("No se encontro usuario con ID: " + validUserId);
-        }
-        return user;
+    public User getUserById(Long userId) {
+        UserEntity entity = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("No se encontró usuario con ID: " + userId));
+        return UserMapper.toModel(entity);
+    }
+
+    public UserEntity getUserEntityById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("No se encontró usuario con ID: " + userId));
     }
 }

@@ -1,58 +1,57 @@
 package edu.eci.dosw.tdd.core.service;
 
 import edu.eci.dosw.tdd.core.model.Book;
-import edu.eci.dosw.tdd.core.validator.BookValidator;
+import edu.eci.dosw.tdd.persistence.entity.BookEntity;
+import edu.eci.dosw.tdd.persistence.mapper.BookMapper;
+import edu.eci.dosw.tdd.persistence.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 
 @Service
 public class BookService {
 
-    private final Map<String, Book> booksById = new LinkedHashMap<>();
-    private final Map<String, Integer> inventoryByBookId = new LinkedHashMap<>();
-    private final BookValidator bookValidator = new BookValidator();
+    private final BookRepository bookRepository;
 
-    public BookService() {
-        Book book1 = new Book();
-        book1.setId("b1");
-        book1.setTitle("Clean Code");
-        book1.setAuthor("Robert C. Martin");
-        booksById.put(book1.getId(), book1);
-        inventoryByBookId.put(book1.getId(), 2);
-
-        Book book2 = new Book();
-        book2.setId("b2");
-        book2.setTitle("Domain-Driven Design");
-        book2.setAuthor("Eric Evans");
-        booksById.put(book2.getId(), book2);
-        inventoryByBookId.put(book2.getId(), 1);
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
-    public Map<String, Integer> getInventory() {
-        return Collections.unmodifiableMap(inventoryByBookId);
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll()
+                .stream()
+                .map(BookMapper::toModel)
+                .toList();
     }
 
-    public Book getBookById(String bookId) {
-        String validBookId = bookValidator.validateBookId(bookId);
-        Book book = booksById.get(validBookId);
-        if (book == null) {
-            throw new IllegalArgumentException("No se encontro libro con ID: " + validBookId);
+    public Book getBookById(Long bookId) {
+        BookEntity entity = bookRepository.findById(bookId)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró libro con ID: " + bookId));
+        return BookMapper.toModel(entity);
+    }
+
+    public BookEntity getBookEntityById(Long bookId) {
+        return bookRepository.findById(bookId)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró libro con ID: " + bookId));
+    }
+
+    public Book saveBook(Book book) {
+        BookEntity saved = bookRepository.save(BookMapper.toEntity(book));
+        return BookMapper.toModel(saved);
+    }
+
+    public void decrementInventory(BookEntity book) {
+        if (book.getAvailableStock() <= 0) {
+            throw new IllegalArgumentException("No hay stock disponible para el libro con ID: " + book.getId());
         }
-        return book;
+        book.setAvailableStock(book.getAvailableStock() - 1);
+        bookRepository.save(book);
     }
 
-    public int getAvailableCopies(String bookId) {
-        return inventoryByBookId.get(bookId);
-    }
-
-    public void decrementInventory(String bookId) {
-        inventoryByBookId.put(bookId, inventoryByBookId.get(bookId) - 1);
-    }
-
-    public void incrementInventory(String bookId) {
-        inventoryByBookId.put(bookId, inventoryByBookId.get(bookId) + 1);
+    public void incrementInventory(BookEntity book) {
+        if (book.getAvailableStock() < book.getTotalStock()) {
+            book.setAvailableStock(book.getAvailableStock() + 1);
+            bookRepository.save(book);
+        }
     }
 }

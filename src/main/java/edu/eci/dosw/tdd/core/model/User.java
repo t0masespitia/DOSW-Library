@@ -1,13 +1,14 @@
-package edu.eci.dosw.tdd.core.model;
 public class User {
-    private String id;
+    private Long id;
     private String name;
+    private String email;
+    private String username;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -19,4 +20,19 @@ public class User {
         this.name = name;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

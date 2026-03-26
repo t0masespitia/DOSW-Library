@@ -1,13 +1,9 @@
 package edu.eci.dosw.tdd.controller;
 
 import edu.eci.dosw.tdd.controller.dto.LoanDTO;
-import edu.eci.dosw.tdd.persistence.mapper.LoanMapper;
 import edu.eci.dosw.tdd.core.service.LoanService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import edu.eci.dosw.tdd.persistence.mapper.LoanMapper;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +19,16 @@ public class LoanController {
 
     @GetMapping
     public List<LoanDTO> getLoans() {
-        return loanService.getLoans().stream().map(LoanMapper::toDto).toList();
+        return loanService.getLoans().stream()
+                .map(loan -> new LoanDTO(
+                        null,
+                        loan.getUser().getId(),
+                        loan.getBook().getId(),
+                        loan.getLoanDate(),
+                        loan.getReturnDate(),
+                        loan.getStatus().name()
+                ))
+                .toList();
     }
 
     @PostMapping("/borrow")
