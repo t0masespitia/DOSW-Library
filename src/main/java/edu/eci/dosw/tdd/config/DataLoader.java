@@ -1,63 +1,58 @@
 package edu.eci.dosw.tdd.config;
 
-import edu.eci.dosw.tdd.persistence.entity.BookEntity;
-import edu.eci.dosw.tdd.persistence.entity.Role;
-import edu.eci.dosw.tdd.persistence.entity.UserEntity;
-import edu.eci.dosw.tdd.persistence.repository.BookRepository;
-import edu.eci.dosw.tdd.persistence.repository.UserRepository;
+import edu.eci.dosw.tdd.core.model.User;
+import edu.eci.dosw.tdd.core.repository.BookRepositoryPort;
+import edu.eci.dosw.tdd.core.repository.UserRepositoryPort;
+import edu.eci.dosw.tdd.core.model.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
 
-    private final BookRepository bookRepository;
-    private final UserRepository userRepository;
+    private final BookRepositoryPort bookRepository;
+    private final UserRepositoryPort userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) {
 
-        if (bookRepository.count() == 0) {
-            BookEntity book1 = BookEntity.builder()
-                    .title("Clean Code")
-                    .author("Robert C. Martin")
-                    .isbn("9780132350884")
-                    .totalStock(5)
-                    .availableStock(5)
-                    .build();
-
-            BookEntity book2 = BookEntity.builder()
-                    .title("Domain-Driven Design")
-                    .author("Eric Evans")
-                    .isbn("9780321125217")
-                    .totalStock(3)
-                    .availableStock(3)
-                    .build();
-
+        if (bookRepository.findAll().isEmpty()) {
+            Book book1 = new Book();
+            book1.setTitle("Clean Code");
+            book1.setAuthor("Robert C. Martin");
+            book1.setIsbn("9780132350884");
+            book1.setTotalStock(5);
+            book1.setAvailableStock(5);
             bookRepository.save(book1);
+
+            Book book2 = new Book();
+            book2.setTitle("Domain-Driven Design");
+            book2.setAuthor("Eric Evans");
+            book2.setIsbn("9780321125217");
+            book2.setTotalStock(3);
+            book2.setAvailableStock(3);
             bookRepository.save(book2);
         }
 
-        if (userRepository.count() == 0) {
-            UserEntity user1 = UserEntity.builder()
-                    .name("Juan")
-                    .email("juan@email.com")
-                    .username("juan")
-                    .password("123456")
-                    .role(Role.USER)
-                    .build();
-
-            UserEntity user2 = UserEntity.builder()
-                    .name("Admin")
-                    .email("admin@email.com")
-                    .username("admin")
-                    .password("admin123")
-                    .role(Role.BIBLIOTECARIO)
-                    .build();
-
+        if (userRepository.findAll().isEmpty()) {
+            User user1 = new User();
+            user1.setName("Juan");
+            user1.setEmail("juan@email.com");
+            user1.setUsername("juan");
+            user1.setPassword(passwordEncoder.encode("123456"));
+            user1.setRole("USER");
             userRepository.save(user1);
+
+            User user2 = new User();
+            user2.setName("Admin");
+            user2.setEmail("admin@email.com");
+            user2.setUsername("admin");
+            user2.setPassword(passwordEncoder.encode("admin123"));
+            user2.setRole("BIBLIOTECARIO");
             userRepository.save(user2);
         }
     }

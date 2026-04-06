@@ -1,10 +1,10 @@
-package edu.eci.dosw.tdd.persistence.mapper;
+package edu.eci.dosw.tdd.persistence.relational.mapper;
 
 import edu.eci.dosw.tdd.controller.dto.LoanDTO;
 import edu.eci.dosw.tdd.core.model.Loan;
 import edu.eci.dosw.tdd.core.model.Status;
-import edu.eci.dosw.tdd.persistence.entity.LoanEntity;
-import edu.eci.dosw.tdd.persistence.entity.LoanStatus;
+import edu.eci.dosw.tdd.persistence.relational.entity.LoanEntity;
+import edu.eci.dosw.tdd.persistence.relational.entity.LoanStatus;
 
 public final class LoanMapper {
 
@@ -23,9 +23,9 @@ public final class LoanMapper {
 
     public static LoanDTO toDto(Loan loan) {
         return new LoanDTO(
-                null,
-                loan.getUser().getId(),
-                loan.getBook().getId(),
+                loan.getId(),
+                loan.getUser() != null ? loan.getUser().getId() : null,
+                loan.getBook() != null ? loan.getBook().getId() : null,
                 loan.getLoanDate(),
                 loan.getReturnDate(),
                 loan.getStatus() == Status.ACTIVE ? LoanStatus.ACTIVO : LoanStatus.DEVUELTO
@@ -42,4 +42,14 @@ public final class LoanMapper {
                 entity.getStatus()
         );
     }
+
+    public static LoanEntity toEntity(Loan loan) {
+        LoanEntity entity = new LoanEntity();
+        entity.setId(loan.getId());
+        entity.setLoanDate(loan.getLoanDate());
+        entity.setReturnDate(loan.getReturnDate());
+        entity.setStatus(loan.getStatus() == Status.ACTIVE ? LoanStatus.ACTIVO : LoanStatus.DEVUELTO);
+        return entity;
+    }
+
 }

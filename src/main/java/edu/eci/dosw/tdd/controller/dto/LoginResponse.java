@@ -1,6 +1,7 @@
 package edu.eci.dosw.tdd.controller.dto;
 
-public record CreateLoanRequest(
+public record LoginResponse(
+        String token,
         String username,
-        String bookIsbn
+        String role
 ) {}

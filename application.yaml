@@ -2,6 +2,8 @@ spring:
   application:
     name: DOSW-Library
 
+  profiles:
+    active: mongo
   datasource:
     url: jdbc:postgresql://localhost:5432/library_db
     username: postgres
@@ -20,6 +22,11 @@ spring:
     init:
       mode: never
 
+  data:
+    mongodb:
+      uri: mongodb+srv://tomasespitiaq_db_user:Dosw2024@cluster0.caixds2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      database: library_db
+
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -27,3 +34,16 @@ springdoc:
   swagger-ui:
     path: /swagger-ui/index.html
     enabled: true
+
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.p12
+    key-store-password: dosw123
+    key-store-type: PKCS12
+    key-alias: dosw-library
+
+    logging:
+      level:
+        org.springframework.security: DEBUG

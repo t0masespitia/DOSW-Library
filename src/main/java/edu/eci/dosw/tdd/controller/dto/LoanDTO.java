@@ -1,6 +1,6 @@
 package edu.eci.dosw.tdd.controller.dto;
 
-import edu.eci.dosw.tdd.persistence.entity.LoanStatus;
+import edu.eci.dosw.tdd.persistence.relational.entity.LoanStatus;
 import java.time.LocalDate;
 
 public record LoanDTO(
