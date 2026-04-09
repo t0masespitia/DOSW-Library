@@ -80,8 +80,10 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: dosw-libreria
-          package: 'app.jar'
+      - name: Deploy to Azure Web App via CLI
+        run: |
+          az webapp deploy \
+            --resource-group Libreria \
+            --name dosw-libreria \
+            --src-path app.jar \
+            --type jar
