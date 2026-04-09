@@ -18,8 +18,14 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Compile project
-        run: mvn compile -DskipTests
+      - name: Compile and package project
+        run: mvn package -DskipTests
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-jar
+          path: target/*.jar
 
   test:
     name: Test
@@ -58,7 +64,16 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    needs: test
+    needs: [test]
     steps:
-      - name: Deploy placeholder
-        run: echo "En construcción ..."
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-jar
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: dosw-libreria
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: '*.jar'
