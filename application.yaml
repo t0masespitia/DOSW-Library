@@ -25,7 +25,7 @@ spring:
   data:
     mongodb:
       uri: ${SPRING_DATA_MONGODB_URI:mongodb+srv://tomasespitiaq_db_user:Dosw2024@cluster0.caixds2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0}
-      database: library_db
+      database: ${SPRING_DATA_MONGODB_DATABASE:library_db}
 
 springdoc:
   api-docs:
