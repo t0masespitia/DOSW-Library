@@ -80,6 +80,9 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Start Web App
+        run: az webapp start --resource-group Libreria --name dosw-libreria
+
       - name: Deploy to Azure Web App via CLI
         run: |
           az webapp deploy \
