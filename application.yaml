@@ -24,7 +24,7 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb+srv://tomasespitiaq_db_user:Dosw2024@cluster0.caixds2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb+srv://tomasespitiaq_db_user:Dosw2024@cluster0.caixds2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0}
       database: library_db
 
 springdoc:
@@ -36,14 +36,14 @@ springdoc:
     enabled: true
 
 server:
-  port: 8443
+  port: ${PORT:8443}
   ssl:
-    enabled: true
+    enabled: ${SSL_ENABLED:true}
     key-store: classpath:keystore.p12
     key-store-password: dosw123
     key-store-type: PKCS12
     key-alias: dosw-library
 
-    logging:
-      level:
-        org.springframework.security: DEBUG
+logging:
+  level:
+    org.springframework.security: DEBUG
