@@ -18,8 +18,8 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Compile project
-        run: mvn compile -DskipTests
+      - name: Compile and package project
+        run: mvn package -DskipTests
 
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
