@@ -2,7 +2,8 @@ name: CI/CD Pipeline
 
 on:
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -64,16 +65,28 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [ test ]
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: app-jar
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
+      - name: Rename JAR
+        run: mv *.jar app.jar
+
+      - name: Azure Login
+        uses: azure/login@v1
         with:
-          app-name: dosw-libreria
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: '*.jar'
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Start Web App
+        run: az webapp start --resource-group Libreria --name dosw-libreria
+
+      - name: Deploy to Azure Web App via CLI
+        run: |
+          az webapp deploy \
+            --resource-group Libreria \
+            --name dosw-libreria \
+            --src-path app.jar \
+            --type jar
